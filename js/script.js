@@ -34,7 +34,11 @@ const depositAmount = document.querySelector('.deposit-amount');
 const depositPercent = document.querySelector('.deposit-percent');
 
 salaryAmount.addEventListener('input', () => {
-    button.disabled = false;
+    if (salaryAmount.value === '') {
+        button.disabled = true;
+    } else {
+        button.disabled = false;
+    }
 });
 
 class AppData {
@@ -77,6 +81,7 @@ AppData.prototype.showResult = function () {
     additionalExpensesValue.value = this.addExpenses.join(', ');
     additionalIncomeValue.value = this.addIncome.join(', ');
     periodSelect.addEventListener('input', () => {
+        console.log(incomePeriodValue.value);
         incomePeriodValue.value = this.calcSavedMoney();
     });
     targetMonthValue.value = this.getTargetMonth(); //Math.round(targetAmount.value / appData.budgetMonth); 
@@ -210,6 +215,7 @@ AppData.prototype.changePercent = function () {
 };
 
 AppData.prototype.calcSavedMoney =  function () {
+    console.log(this.budgetMonth * this.periodSelects);
     return this.budgetMonth * this.periodSelects;
 };
 
@@ -289,10 +295,10 @@ AppData.prototype.eventListeners = function () {
     const _this = this;
     button.addEventListener('click',  appData.start.bind(appData));
     button.addEventListener('click', _this.blocking);
-    buttonCancel.addEventListener('click', _this.reset);
+    buttonCancel.addEventListener('click', _this.reset.bind(appData));
     buttonTagTwo.addEventListener('click', _this.addExpensesBlock);
     buttonTagOne.addEventListener('click', _this.addIncomeBlock);
-    periodSelect.addEventListener('input', _this.addPeriodSelect);
+    periodSelect.addEventListener('input', appData.addPeriodSelect.bind(appData));
     checkBox.addEventListener('change', this.depositHeandler.bind(this))
 };
 
@@ -301,5 +307,40 @@ const appData = new AppData();
 AppData.prototype.eventListeners();
 // console.log(appData);
 
-/*  https://codepen.io/Kotik_kot/pen/ZEeVqBX?editors=0010
-    https://codepen.io/Kotik_kot/pen/oNZJQWb?editors=0010 */
+// /*  https://codepen.io/Kotik_kot/pen/ZEeVqBX?editors=0010
+//     https://codepen.io/Kotik_kot/pen/oNZJQWb?editors=0010 */
+
+// ЗАДАНИЕ С CODEPEN (на всякий случай!)
+// 'use strict';
+// const myLesson = [
+//     {lesson: 1, type: 'basic', points: 2},
+//     {lesson: 2, type: 'additional', points: 4},
+//     {lesson: 3, type: 'basic', points: 6},
+//     {lesson: 4, type: 'additional', points: 3},
+//     {lesson: 5, type: 'basic', points: 4},
+//     {lesson: 6, type: 'basic', points: 2},
+//     {lesson: 7, type: 'additional', points: 2},
+//     {lesson: 8, type: 'basic', points: 6},
+//     {lesson: 9, type: 'basic', points: 4},
+//     {lesson: 10, type: 'basic', points: 6},
+//     {lesson: 11, type: 'additional', points: 5},
+//     {lesson: 12, type: 'basic', points: 2},
+//     {lesson: 13, type: 'additional', points: 2},
+//     {lesson: 14, type: 'basic', points: 4},
+//     {lesson: 15, type: 'additional', points: 1},
+//     {lesson: 16, type: 'additional', points: 7},
+//   ];
+  
+  
+// for (let event in myLesson) {
+//     if (myLesson[event].type === 'additional') {
+//         delete myLesson[event];
+//     }
+// }
+
+// for (let item in myLesson) {
+//     let res =  myLesson[item].points;
+//     res = res / 2;
+//     myLesson[item].points = res;
+// }
+// console.log(myLesson);
